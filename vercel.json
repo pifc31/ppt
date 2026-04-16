@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/pagar", "dest": "/pages/pagar.html" },
+    { "src": "/gracias", "dest": "/pages/gracias.html" },
+    { "src": "/login", "dest": "/pages/login.html" },
+    { "src": "/app", "dest": "/pages/app.html" },
+    { "src": "/", "dest": "/pages/pagar.html" }
+  ]
+}
