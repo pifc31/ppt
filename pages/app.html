@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi proceso — Perpetua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--azul:#1C2B3A;--azul-mid:#2D4459;--dorado:#B8965A;--dorado-light:#D4AE78;--crema:#F5F0E8;--blanco:#FDFAF5;--gris:#8A9BA8;--serif:'Cormorant Garamond',Georgia,serif;--sans:'DM Sans',sans-serif}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--sans);background:var(--blanco);min-height:100vh}
+
+    /* HEADER */
+    .app-header{background:var(--azul);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .app-logo{font-family:var(--serif);font-size:1.4rem;font-style:italic;color:var(--blanco);letter-spacing:.1em}
+    .app-email{font-family:var(--sans);font-size:.75rem;color:rgba(253,250,245,.45);letter-spacing:.05em}
+    .app-guardado{font-family:var(--sans);font-size:.7rem;color:var(--dorado-light);display:flex;align-items:center;gap:.4rem;opacity:0;transition:opacity .5s}
+    .app-guardado.visible{opacity:1}
+
+    /* PROGRESO */
+    .progreso-bar{background:var(--crema);padding:1.2rem 2rem;border-bottom:1px solid rgba(28,43,58,.08)}
+    .progreso-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:.3rem}
+    .progreso-step{width:100%;height:4px;background:rgba(28,43,58,.1);border-radius:2px;transition:background .3s}
+    .progreso-step.done{background:var(--dorado)}
+    .progreso-step.active{background:var(--dorado-light)}
+    .progreso-label{font-family:var(--sans);font-size:.7rem;color:var(--gris);text-align:center;margin-top:.6rem;white-space:nowrap}
+
+    /* PANTALLA */
+    .pantalla{max-width:680px;margin:0 auto;padding:3rem 2rem;display:none}
+    .pantalla.activa{display:block}
+    .pantalla-num{font-family:var(--sans);font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dorado);margin-bottom:1rem}
+    .pantalla h2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:400;line-height:1.2;color:var(--azul);margin-bottom:.8rem}
+    .pantalla h2 em{font-style:italic;color:var(--dorado)}
+    .pantalla p.desc{font-family:var(--sans);font-size:.95rem;color:#6B7280;line-height:1.65;margin-bottom:2rem}
+
+    /* INPUTS */
+    .campo{margin-bottom:1.5rem}
+    .campo label{display:block;font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--azul);margin-bottom:.5rem;letter-spacing:.03em}
+    .campo input,.campo select,.campo textarea{width:100%;font-family:var(--sans);font-size:.95rem;padding:.85rem 1rem;border:1.5px solid rgba(28,43,58,.15);border-radius:4px;background:var(--blanco);color:var(--azul);outline:none;transition:border-color .2s}
+    .campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--dorado)}
+    .campo textarea{min-height:100px;resize:vertical;line-height:1.5}
+    .campo .hint{font-family:var(--sans);font-size:.75rem;color:var(--gris);margin-top:.4rem;line-height:1.4}
+    .campo-fila{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+    /* OPCIONES TIPO TARJETA */
+    .opciones{display:flex;flex-direction:column;gap:.8rem;margin-bottom:2rem}
+    .opcion{border:1.5px solid rgba(28,43,58,.15);border-radius:4px;padding:1.2rem 1.5rem;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:1rem}
+    .opcion:hover{border-color:var(--dorado);background:rgba(184,150,90,.04)}
+    .opcion.seleccionada{border-color:var(--dorado);background:rgba(184,150,90,.06)}
+    .opcion-radio{width:20px;height:20px;border:2px solid rgba(28,43,58,.2);border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .opcion.seleccionada .opcion-radio{border-color:var(--dorado);background:var(--dorado)}
+    .opcion.seleccionada .opcion-radio::after{content:'';width:8px;height:8px;background:white;border-radius:50%}
+    .opcion-titulo{font-family:var(--sans);font-size:.95rem;font-weight:500;color:var(--azul);margin-bottom:.2rem}
+    .opcion-desc{font-family:var(--sans);font-size:.82rem;color:#6B7280;line-height:1.4}
+
+    /* HEREDERO CARD */
+    .heredero-card{border:1.5px solid rgba(28,43,58,.12);border-radius:4px;padding:1.2rem 1.5rem;margin-bottom:1rem;position:relative}
+    .heredero-card-titulo{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--azul);margin-bottom:1rem}
+    .btn-quitar{position:absolute;top:.8rem;right:.8rem;background:none;border:none;font-size:1.2rem;color:#9CA3AF;cursor:pointer;transition:color .2s}
+    .btn-quitar:hover{color:#DC2626}
+    .btn-agregar{width:100%;background:transparent;border:1.5px dashed rgba(28,43,58,.2);border-radius:4px;padding:1rem;font-family:var(--sans);font-size:.88rem;color:var(--gris);cursor:pointer;transition:all .2s;margin-bottom:2rem}
+    .btn-agregar:hover{border-color:var(--dorado);color:var(--dorado)}
+
+    /* INFO BOX */
+    .info-box{border-left:3px solid var(--dorado);background:rgba(184,150,90,.05);padding:1rem 1.2rem;border-radius:0 4px 4px 0;margin-bottom:2rem}
+    .info-box p{font-family:var(--sans);font-size:.85rem;color:#374151;line-height:1.6}
+    .info-box strong{color:var(--azul)}
+
+    /* RESUMEN FINAL */
+    .resumen{background:var(--crema);border-radius:6px;padding:2rem;margin-bottom:2rem}
+    .resumen h3{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--azul);margin-bottom:1.2rem}
+    .resumen-item{padding:.7rem 0;border-bottom:1px solid rgba(28,43,58,.07);display:flex;gap:1rem}
+    .resumen-item:last-child{border-bottom:none}
+    .resumen-key{font-family:var(--sans);font-size:.78rem;color:var(--gris);min-width:140px;flex-shrink:0;padding-top:2px}
+    .resumen-val{font-family:var(--sans);font-size:.88rem;color:var(--azul);line-height:1.5}
+
+    /* NAVEGACIÓN */
+    .nav-pantallas{display:flex;gap:1rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(28,43,58,.08)}
+    .btn-anterior{background:transparent;border:1.5px solid rgba(28,43,58,.15);color:var(--azul);font-family:var(--sans);font-size:.88rem;padding:.85rem 1.8rem;border-radius:4px;cursor:pointer;transition:all .2s}
+    .btn-anterior:hover{border-color:var(--azul)}
+    .btn-siguiente{background:var(--dorado);color:var(--blanco);font-family:var(--sans);font-size:.9rem;font-weight:500;padding:.9rem 2.2rem;border:none;border-radius:4px;cursor:pointer;transition:background .3s;margin-left:auto;display:flex;align-items:center;gap:.5rem}
+    .btn-siguiente:hover{background:var(--dorado-light)}
+    .btn-siguiente:disabled{opacity:.5;cursor:not-allowed}
+
+    /* PANTALLA DE BIENVENIDA */
+    .bienvenida{text-align:center;padding:4rem 2rem}
+    .bienvenida .icono-grande{font-size:3rem;margin-bottom:1.5rem}
+    .bienvenida h2{font-family:var(--serif);font-size:2.5rem;font-weight:400;color:var(--azul);margin-bottom:1rem}
+    .bienvenida h2 em{font-style:italic;color:var(--dorado)}
+    .bienvenida p{font-family:var(--sans);font-size:1rem;color:#6B7280;line-height:1.7;max-width:480px;margin:0 auto 2rem}
+    .pasos-resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0;text-align:left}
+    .paso-resumen{background:var(--crema);border-radius:4px;padding:1.2rem}
+    .paso-resumen-num{font-family:var(--serif);font-size:1.8rem;font-style:italic;color:var(--dorado);margin-bottom:.4rem}
+    .paso-resumen-txt{font-family:var(--sans);font-size:.82rem;color:#374151;line-height:1.4}
+
+    /* PANTALLA FINAL */
+    .pantalla-final{text-align:center}
+    .confeti{font-size:2.5rem;margin-bottom:1.5rem}
+    .download-card{background:var(--azul);border-radius:6px;padding:2rem;margin:2rem 0;text-align:left}
+    .download-card h3{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:var(--blanco);margin-bottom:.5rem}
+    .download-card p{font-family:var(--sans);font-size:.85rem;color:rgba(253,250,245,.6);margin-bottom:1.2rem;line-height:1.5}
+    .btn-descargar{display:inline-flex;align-items:center;gap:.5rem;background:var(--dorado);color:var(--blanco);font-family:var(--sans);font-size:.85rem;font-weight:500;padding:.85rem 1.8rem;border:none;border-radius:4px;cursor:pointer;transition:background .3s}
+    .btn-descargar:hover{background:var(--dorado-light)}
+
+    /* LOADING */
+    #loadingScreen{position:fixed;inset:0;background:var(--azul);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999}
+    #loadingScreen.oculto{display:none}
+    .loading-logo{font-family:var(--serif);font-size:2rem;font-style:italic;color:var(--blanco);margin-bottom:2rem}
+    .loading-spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--dorado);border-radius:50%;animation:spin .8s linear infinite}
+    .loading-texto{font-family:var(--sans);font-size:.8rem;color:rgba(255,255,255,.4);margin-top:1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* NO AUTH */
+    #noAuthScreen{position:fixed;inset:0;background:var(--azul);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:998;display:none}
+    .no-auth-card{background:var(--blanco);border-radius:6px;padding:3rem;max-width:420px;text-align:center}
+    .no-auth-card h2{font-family:var(--serif);font-size:1.8rem;color:var(--azul);margin-bottom:.8rem}
+    .no-auth-card p{font-family:var(--sans);font-size:.9rem;color:#6B7280;line-height:1.6;margin-bottom:1.5rem}
+    .btn-ir-pago{display:block;background:var(--dorado);color:var(--blanco);font-family:var(--sans);font-size:.88rem;font-weight:500;padding:.9rem 2rem;border-radius:4px;text-decoration:none;transition:background .3s}
+    .btn-ir-pago:hover{background:var(--dorado-light)}
+
+    @media(max-width:600px){
+      .campo-fila{grid-template-columns:1fr}
+      .pasos-resumen{grid-template-columns:1fr}
+      .nav-pantallas{flex-wrap:wrap}
+      .btn-siguiente{width:100%;justify-content:center}
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+  <div class="loading-logo">Perpetua</div>
+  <div class="loading-spinner"></div>
+  <p class="loading-texto">Cargando tu proceso...</p>
+</div>
+
+<!-- NO AUTH -->
+<div id="noAuthScreen" style="display:none">
+  <div class="no-auth-card">
+    <h2>Acceso requerido</h2>
+    <p>Para acceder a tu proceso de Perpetua necesitas haber realizado el pago y haber ingresado con el enlace que te enviamos por correo.</p>
+    <a href="/pagar" class="btn-ir-pago">Ir a Perpetua →</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="app-header">
+  <span class="app-logo">Perpetua</span>
+  <span class="app-email" id="appEmail"></span>
+  <span class="app-guardado" id="guardadoMsg">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    Guardado
+  </span>
+</header>
+
+<!-- BARRA DE PROGRESO -->
+<div class="progreso-bar">
+  <div class="progreso-inner" id="progresoBarras"></div>
+</div>
+<div style="text-align:center;padding:.5rem;background:var(--crema);border-bottom:1px solid rgba(28,43,58,.05)">
+  <span class="progreso-label" id="progresoLabel">Paso 1 de 13</span>
+</div>
+
+<!-- PANTALLAS -->
+<main>
+
+<!-- P0: BIENVENIDA -->
+<div class="pantalla activa" id="p0">
+  <div class="bienvenida">
+    <div class="icono-grande">📋</div>
+    <h2>Hola, <em>bienvenido.</em></h2>
+    <p>Vamos a organizar todo lo que necesitas para que tu familia quede protegida. No necesitas saber de leyes — solo responder preguntas simples con honestidad.</p>
+    <div class="pasos-resumen">
+      <div class="paso-resumen">
+        <div class="paso-resumen-num">20</div>
+        <div class="paso-resumen-txt">minutos aproximados para completar todo</div>
+      </div>
+      <div class="paso-resumen">
+        <div class="paso-resumen-num">13</div>
+        <div class="paso-resumen-txt">pasos guiados — puedes pausar y regresar</div>
+      </div>
+      <div class="paso-resumen">
+        <div class="paso-resumen-num">∞</div>
+        <div class="paso-resumen-txt">veces puedes entrar y editar tu información</div>
+      </div>
+    </div>
+    <div class="info-box">
+      <p><strong>Tu progreso se guarda automáticamente.</strong> Puedes cerrar esta ventana y regresar cuando quieras — todo estará aquí.</p>
+    </div>
+    <div class="nav-pantallas" style="justify-content:center;border:none;padding:0">
+      <button class="btn-siguiente" onclick="siguiente()">Comenzar mi proceso <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- P1: DATOS PERSONALES -->
+<div class="pantalla" id="p1">
+  <span class="pantalla-num">Paso 1 de 13</span>
+  <h2>Tus datos <em>personales</em></h2>
+  <p class="desc">Esta información aparecerá en tu expediente. Debe coincidir exactamente con tu identificación oficial.</p>
+  <div class="campo-fila">
+    <div class="campo"><label>Nombre(s) *</label><input type="text" id="p1_nombres" placeholder="Como en tu INE"/></div>
+    <div class="campo"><label>Apellido paterno *</label><input type="text" id="p1_apellido1" placeholder=""/></div>
+  </div>
+  <div class="campo-fila">
+    <div class="campo"><label>Apellido materno *</label><input type="text" id="p1_apellido2" placeholder=""/></div>
+    <div class="campo"><label>Fecha de nacimiento *</label><input type="date" id="p1_nacimiento"/></div>
+  </div>
+  <div class="campo-fila">
+    <div class="campo"><label>CURP *</label><input type="text" id="p1_curp" placeholder="18 caracteres" maxlength="18" style="text-transform:uppercase"/></div>
+    <div class="campo"><label>RFC</label><input type="text" id="p1_rfc" placeholder="Opcional" maxlength="13" style="text-transform:uppercase"/></div>
+  </div>
+  <div class="campo">
+    <label>Estado civil *</label>
+    <select id="p1_estado_civil">
+      <option value="">Selecciona...</option>
+      <option>Soltero/a</option>
+      <option>Casado/a</option>
+      <option>Unión libre / Concubinato</option>
+      <option>Divorciado/a</option>
+      <option>Viudo/a</option>
+    </select>
+  </div>
+  <div class="campo"><label>Domicilio completo *</label><input type="text" id="p1_domicilio" placeholder="Calle, número, colonia, alcaldía, CDMX, CP"/></div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P2: RÉGIMEN MATRIMONIAL -->
+<div class="pantalla" id="p2">
+  <span class="pantalla-num">Paso 2 de 13</span>
+  <h2>Tu <em>situación matrimonial</em></h2>
+  <p class="desc">Esto define qué bienes son "tuyos" para efectos del testamento y cuáles pertenecen a la sociedad conyugal.</p>
+  <div class="opciones" id="p2_regimen">
+    <div class="opcion" onclick="seleccionarOpcion('p2_regimen',this,'sociedad_conyugal')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Sociedad conyugal</div><div class="opcion-desc">Los bienes adquiridos durante el matrimonio pertenecen a ambos al 50%. Es el régimen más común en México.</div></div>
+    </div>
+    <div class="opcion" onclick="seleccionarOpcion('p2_regimen',this,'separacion_bienes')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Separación de bienes</div><div class="opcion-desc">Cada quien administra y dispone de sus propios bienes. Debes especificar qué te pertenece a ti.</div></div>
+    </div>
+    <div class="opcion" onclick="seleccionarOpcion('p2_regimen',this,'no_aplica')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">No estoy casado/a</div><div class="opcion-desc">Todos tus bienes son propios y puedes disponer de ellos libremente en el testamento.</div></div>
+    </div>
+  </div>
+  <div class="campo" id="p2_conyuge_datos" style="display:none">
+    <label>Nombre completo de tu cónyuge</label>
+    <input type="text" id="p2_conyuge_nombre" placeholder="Nombre completo como aparece en su INE"/>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P3: HEREDEROS -->
+<div class="pantalla" id="p3">
+  <span class="pantalla-num">Paso 3 de 13</span>
+  <h2>Tus <em>herederos</em></h2>
+  <p class="desc">¿A quién quieres dejarle tu patrimonio? Puedes tener uno o varios herederos. Más adelante definirás qué le toca a cada quien.</p>
+  <div id="p3_lista_herederos"></div>
+  <button class="btn-agregar" onclick="agregarHeredero()">+ Agregar heredero</button>
+  <div class="info-box">
+    <p><strong>Tip:</strong> Si tienes hijos, son considerados "herederos forzosos" — la ley les garantiza una parte mínima llamada "legítima". Puedes nombrar herederos adicionales libremente.</p>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P4: DISTRIBUCIÓN -->
+<div class="pantalla" id="p4">
+  <span class="pantalla-num">Paso 4 de 13</span>
+  <h2>¿Cómo quieres <em>distribuir</em> tus bienes?</h2>
+  <p class="desc">Define en qué proporción recibirá cada heredero tu patrimonio.</p>
+  <div class="opciones" id="p4_tipo">
+    <div class="opcion" onclick="seleccionarOpcion('p4_tipo',this,'partes_iguales')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Partes iguales entre todos</div><div class="opcion-desc">Cada heredero recibe exactamente la misma proporción. La opción más simple y sin conflictos.</div></div>
+    </div>
+    <div class="opcion" onclick="seleccionarOpcion('p4_tipo',this,'porcentajes_distintos')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Porcentajes distintos</div><div class="opcion-desc">Defines exactamente qué porcentaje recibe cada heredero. La suma debe dar 100%.</div></div>
+    </div>
+    <div class="opcion" onclick="seleccionarOpcion('p4_tipo',this,'bienes_especificos')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Bienes específicos para cada quien</div><div class="opcion-desc">Le dejas el departamento a uno, la cuenta bancaria a otro, etc. Requiere legados específicos.</div></div>
+    </div>
+  </div>
+  <div id="p4_porcentajes" style="display:none"></div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P5: INMUEBLES -->
+<div class="pantalla" id="p5">
+  <span class="pantalla-num">Paso 5 de 13</span>
+  <h2>Tus <em>inmuebles</em></h2>
+  <p class="desc">Lista los inmuebles a tu nombre. No necesitas las escrituras contigo — solo los datos básicos para el expediente.</p>
+  <div id="p5_lista_inmuebles"></div>
+  <button class="btn-agregar" onclick="agregarInmueble()">+ Agregar inmueble</button>
+  <div class="info-box">
+    <p><strong>¿No tienes inmuebles?</strong> Continúa — el testamento aplica igual para cuentas bancarias, vehículos, inversiones y cualquier otro bien.</p>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P6: BIENES FINANCIEROS -->
+<div class="pantalla" id="p6">
+  <span class="pantalla-num">Paso 6 de 13</span>
+  <h2>Cuentas e <em>inversiones</em></h2>
+  <p class="desc">Cuentas bancarias, inversiones, afore, seguros de vida y fondos. El notario no necesita números de cuenta — solo la institución y tipo.</p>
+  <div id="p6_lista_financieros"></div>
+  <button class="btn-agregar" onclick="agregarFinanciero()">+ Agregar cuenta o inversión</button>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P7: BIENES DIGITALES -->
+<div class="pantalla" id="p7">
+  <span class="pantalla-num">Paso 7 de 13</span>
+  <h2>Bienes <em>digitales</em></h2>
+  <p class="desc">Desde 2021 el Código Civil de CDMX reconoce los bienes digitales como heredables. ¿Tienes alguno de estos?</p>
+  <div class="opciones" id="p7_digitales">
+    <div class="opcion" onclick="toggleOpcionMultiple(this,'criptomonedas')">
+      <div class="opcion-radio" style="border-radius:3px"></div>
+      <div><div class="opcion-titulo">Criptomonedas o NFTs</div><div class="opcion-desc">Bitcoin, Ethereum, stablecoins, tokens.</div></div>
+    </div>
+    <div class="opcion" onclick="toggleOpcionMultiple(this,'inversiones_digitales')">
+      <div class="opcion-radio" style="border-radius:3px"></div>
+      <div><div class="opcion-titulo">Cuentas de inversión digital</div><div class="opcion-desc">Nu Investments, GBM+, Flink, CETES Directo.</div></div>
+    </div>
+    <div class="opcion" onclick="toggleOpcionMultiple(this,'redes_sociales')">
+      <div class="opcion-radio" style="border-radius:3px"></div>
+      <div><div class="opcion-titulo">Redes sociales con instrucciones</div><div class="opcion-desc">Qué hacer con tus cuentas: memorializarlas, eliminarlas o transferirlas.</div></div>
+    </div>
+    <div class="opcion" onclick="toggleOpcionMultiple(this,'dominio_web')">
+      <div class="opcion-radio" style="border-radius:3px"></div>
+      <div><div class="opcion-titulo">Dominio o sitio web</div><div class="opcion-desc">Dominios registrados o sitios con ingresos.</div></div>
+    </div>
+    <div class="opcion" onclick="toggleOpcionMultiple(this,'ninguno')">
+      <div class="opcion-radio" style="border-radius:3px"></div>
+      <div><div class="opcion-titulo">No tengo bienes digitales</div><div class="opcion-desc">Continuar al siguiente paso.</div></div>
+    </div>
+  </div>
+  <div class="campo" id="p7_detalles_extra" style="display:none">
+    <label>Notas sobre tus bienes digitales (opcional)</label>
+    <textarea id="p7_notas" placeholder="Ej: Tengo 0.5 BTC en wallet de Bitso. La instrucción es transferirla a mi hijo mayor."></textarea>
+    <span class="hint">No incluyas contraseñas ni llaves privadas aquí. Guárdalas en un lugar seguro separado.</span>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P8: ALBACEA -->
+<div class="pantalla" id="p8">
+  <span class="pantalla-num">Paso 8 de 13</span>
+  <h2>Tu <em>albacea</em></h2>
+  <p class="desc">El albacea es quien ejecuta tu testamento cuando ya no estás. Presentará el documento, hará el inventario y repartirá los bienes. Elige a alguien organizado, de confianza y disponible.</p>
+  <div class="info-box">
+    <p><strong>Antes de elegir:</strong> ¿Ya hablaste con esta persona? El albacea debe saber y aceptar el cargo. Si lo nombras sin avisarle, puede rechazarlo y complica el proceso.</p>
+  </div>
+  <div class="campo-fila">
+    <div class="campo"><label>Nombre completo del albacea *</label><input type="text" id="p8_albacea_nombre" placeholder="Nombre como en su INE"/></div>
+    <div class="campo"><label>Parentesco / Relación</label><input type="text" id="p8_albacea_parentesco" placeholder="Ej: Hijo mayor, hermana, amigo"/></div>
+  </div>
+  <div class="campo"><label>Domicilio del albacea *</label><input type="text" id="p8_albacea_domicilio" placeholder="Calle, número, colonia, ciudad, CP"/></div>
+  <div class="campo"><label>Teléfono de contacto</label><input type="tel" id="p8_albacea_tel" placeholder="55 xxxx xxxx"/></div>
+  <div style="margin-top:1.5rem">
+    <h3 style="font-family:var(--serif);font-size:1.1rem;color:var(--azul);margin-bottom:1rem">Albacea sustituto (recomendado)</h3>
+    <p style="font-family:var(--sans);font-size:.85rem;color:#6B7280;margin-bottom:1rem">Si el albacea principal no puede o no quiere ejercer el cargo, ¿quién lo sustituye?</p>
+    <div class="campo-fila">
+      <div class="campo"><label>Nombre del sustituto</label><input type="text" id="p8_sustituto_nombre" placeholder="Opcional pero recomendado"/></div>
+      <div class="campo"><label>Parentesco</label><input type="text" id="p8_sustituto_parentesco" placeholder=""/></div>
+    </div>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P9: HIJOS MENORES -->
+<div class="pantalla" id="p9">
+  <span class="pantalla-num">Paso 9 de 13</span>
+  <h2>¿Tienes <em>hijos menores</em> de edad?</h2>
+  <p class="desc">Si tienes hijos menores, el testamento debe designar quién se hará cargo de ellos y de su educación si tú faltas.</p>
+  <div class="opciones" id="p9_tiene_menores">
+    <div class="opcion" onclick="seleccionarOpcion('p9_tiene_menores',this,'si');document.getElementById('p9_menores_form').style.display='block'">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Sí, tengo hijos menores de 18 años</div><div class="opcion-desc">Designaré tutor y curador en el testamento.</div></div>
+    </div>
+    <div class="opcion" onclick="seleccionarOpcion('p9_tiene_menores',this,'no');document.getElementById('p9_menores_form').style.display='none'">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">No tengo hijos menores</div><div class="opcion-desc">Continuar al siguiente paso.</div></div>
+    </div>
+  </div>
+  <div id="p9_menores_form" style="display:none;margin-top:1.5rem">
+    <div class="campo-fila">
+      <div class="campo"><label>Tutor designado *</label><input type="text" id="p9_tutor_nombre" placeholder="Nombre completo"/></div>
+      <div class="campo"><label>Relación con tus hijos</label><input type="text" id="p9_tutor_relacion" placeholder="Ej: Abuela materna, tío"/></div>
+    </div>
+    <div class="campo">
+      <label>Curador (quien vigila al tutor)</label>
+      <input type="text" id="p9_curador" placeholder="Nombre completo — puede ser diferente al tutor"/>
+      <span class="hint">El curador supervisa que el tutor cumpla bien con su responsabilidad.</span>
+    </div>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P10: INSTRUCCIONES ESPECIALES -->
+<div class="pantalla" id="p10">
+  <span class="pantalla-num">Paso 10 de 13</span>
+  <h2>Instrucciones <em>especiales</em></h2>
+  <p class="desc">¿Hay algo específico que quieras decir en el testamento? Condiciones, deseos, mensajes o instrucciones que no encajan en los pasos anteriores.</p>
+  <div class="campo">
+    <label>¿Quieres dejarle algo específico a alguien en particular? (Legados)</label>
+    <textarea id="p10_legados" placeholder="Ej: Mi colección de relojes se la dejo a mi hermano Carlos. El piano a mi hija Sofía."></textarea>
+    <span class="hint">Un legado es la asignación de un bien específico a una persona específica, fuera de la herencia general.</span>
+  </div>
+  <div class="campo">
+    <label>¿Tienes deudas o créditos vigentes que el albacea debe conocer?</label>
+    <textarea id="p10_deudas" placeholder="Ej: Crédito hipotecario con BBVA, saldo aprox. $800,000. Tarjeta de crédito Santander."></textarea>
+    <span class="hint">El albacea debe pagarlas con cargo a la herencia antes de repartir.</span>
+  </div>
+  <div class="campo">
+    <label>Instrucciones adicionales para el notario</label>
+    <textarea id="p10_instrucciones" placeholder="Cualquier otra instrucción, condición o deseo que quieras incluir en tu testamento."></textarea>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P11: VOLUNTAD ANTICIPADA -->
+<div class="pantalla" id="p11">
+  <span class="pantalla-num">Paso 11 de 13</span>
+  <h2>Voluntad <em>anticipada</em></h2>
+  <p class="desc">La Voluntad Anticipada es un documento separado del testamento que indica tus deseos médicos si quedas en estado de incapacidad. No es obligatorio pero muchos notarios lo ofrecen junto con el testamento.</p>
+  <div class="opciones" id="p11_voluntad">
+    <div class="opcion" onclick="seleccionarOpcion('p11_voluntad',this,'si_incluir')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Sí me interesa incluirla</div><div class="opcion-desc">Preguntaré en la notaría por el documento de Voluntad Anticipada ($2,060 pesos adicionales aprox.).</div></div>
+    </div>
+    <div class="opcion" onclick="seleccionarOpcion('p11_voluntad',this,'no_incluir')">
+      <div class="opcion-radio"></div>
+      <div><div class="opcion-titulo">Por ahora solo el testamento</div><div class="opcion-desc">Puedo tramitarla en otro momento.</div></div>
+    </div>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Continuar →</button>
+  </div>
+</div>
+
+<!-- P12: REVISIÓN FINAL -->
+<div class="pantalla" id="p12">
+  <span class="pantalla-num">Paso 12 de 13</span>
+  <h2>Revisa tu <em>expediente</em></h2>
+  <p class="desc">Aquí está todo lo que capturaste. Revisa que esté correcto antes de generar tu expediente final.</p>
+  <div class="resumen" id="p12_resumen">
+    <!-- Se llena dinámicamente -->
+  </div>
+  <div class="info-box">
+    <p>¿Algo está mal? Usa el botón "Anterior" para regresar y corregirlo. Puedes editar cualquier sección cuantas veces quieras.</p>
+  </div>
+  <div class="nav-pantallas">
+    <button class="btn-anterior" onclick="anterior()">← Anterior</button>
+    <button class="btn-siguiente" onclick="siguiente()">Generar expediente →</button>
+  </div>
+</div>
+
+<!-- P13: EXPEDIENTE LISTO -->
+<div class="pantalla" id="p13">
+  <div class="pantalla-final">
+    <div class="confeti">🎉</div>
+    <h2 style="font-family:var(--serif);font-size:2.5rem;font-weight:400;color:var(--azul);margin-bottom:.8rem">Tu expediente <em style="color:var(--dorado)">está listo</em></h2>
+    <p style="font-family:var(--sans);font-size:1rem;color:#6B7280;line-height:1.7;max-width:500px;margin:0 auto 2rem">Has organizado todo lo que el notario necesita saber. El siguiente paso es agendar tu cita — la firma tarda 45 minutos.</p>
+
+    <div class="download-card">
+      <h3>Tu expediente Perpetua</h3>
+      <p>Un resumen completo de todas tus decisiones, organizado para presentárselo al notario el día de tu cita.</p>
+      <button class="btn-descargar" onclick="generarPDF()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar expediente PDF
+      </button>
+    </div>
+
+    <div style="background:var(--crema);border-radius:6px;padding:2rem;margin-top:1.5rem;text-align:left">
+      <h3 style="font-family:var(--serif);font-size:1.2rem;color:var(--azul);margin-bottom:1rem">Próximos pasos</h3>
+      <div style="display:flex;flex-direction:column;gap:.8rem">
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <span style="font-family:var(--serif);font-size:1.5rem;color:var(--dorado);line-height:1">1</span>
+          <div><strong style="font-family:var(--sans);font-size:.88rem;color:var(--azul);display:block">Agenda tu cita en una notaría de Benito Juárez</strong><span style="font-family:var(--sans);font-size:.82rem;color:#6B7280">Notarías 140/236 en Av. Cuauhtémoc 738, Narvarte — ★4.5 (359 reseñas)</span></div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <span style="font-family:var(--serif);font-size:1.5rem;color:var(--dorado);line-height:1">2</span>
+          <div><strong style="font-family:var(--sans);font-size:.88rem;color:var(--azul);display:block">Lleva tu expediente impreso y tu INE</strong><span style="font-family:var(--sans);font-size:.82rem;color:#6B7280">La cita dura 45 minutos — llegas con todo listo para firmar</span></div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <span style="font-family:var(--serif);font-size:1.5rem;color:var(--dorado);line-height:1">3</span>
+          <div><strong style="font-family:var(--sans);font-size:.88rem;color:var(--azul);display:block">Paga $1,804 en la notaría y firma</strong><span style="font-family:var(--sans);font-size:.82rem;color:#6B7280">El notario registra tu testamento en el RENAT — tu familia queda protegida</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-family:var(--sans);font-size:.82rem;color:#9CA3AF;margin-top:2rem">Puedes regresar a esta pantalla cuando quieras — tu expediente siempre estará disponible.</p>
+  </div>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ============================================================
+// CONFIGURACIÓN — estas variables las llena Vercel automáticamente
+// ============================================================
+const SUPABASE_URL = 'https://apkbxqgfzhuhajfantgd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwa2J4cWdmemh1aGFqZmFudGdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzIzNzQsImV4cCI6MjA5MTkwODM3NH0.f6ltOViUufMx2Pleu5PWpj5jlfwKZ54a2IRW5h_tZpQ';
+const API_URL = '';
+
+// ============================================================
+// ESTADO GLOBAL
+// ============================================================
+let supabaseClient = null;
+let sesionUsuario = null;
+let tokenAcceso = null;
+let pantallaActual = 0;
+const TOTAL_PANTALLAS = 13; // 0 (bienvenida) + 1-12 + 13 (final)
+let digitalesSeleccionados = [];
+let guardadoTimeout = null;
+let datosLocales = {};
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+  // Leer token del hash de la URL (Supabase lo pone ahí tras magic link)
+  const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
+  const accessToken = hashParams.get('access_token');
+  const refreshToken = hashParams.get('refresh_token');
+
+  supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  if (accessToken) {
+    // Sesión desde magic link
+    const { data, error } = await supabaseClient.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
+    if (!error && data.session) {
+      sesionUsuario = data.session.user;
+      tokenAcceso = data.session.access_token;
+      window.history.replaceState({}, '', '/app'); // limpiar hash
+    }
+  } else {
+    // Recuperar sesión guardada
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+      sesionUsuario = session.user;
+      tokenAcceso = session.access_token;
+    }
+  }
+
+  if (!sesionUsuario) {
+    document.getElementById('loadingScreen').classList.add('oculto');
+    document.getElementById('noAuthScreen').style.display = 'flex';
+    return;
+  }
+
+  document.getElementById('appEmail').textContent = sesionUsuario.email;
+
+  // Cargar progreso guardado
+  await cargarProgreso();
+
+  construirProgresoBar();
+  document.getElementById('loadingScreen').classList.add('oculto');
+  mostrarPantalla(pantallaActual);
+});
+
+// ============================================================
+// SUPABASE — cargar y guardar
+// ============================================================
+async function cargarProgreso() {
+  try {
+    const res = await fetch(`${API_URL}/api/obtener-progreso`, {
+      headers: { Authorization: `Bearer ${tokenAcceso}` }
+    });
+    const data = await res.json();
+    if (data.progreso) {
+      datosLocales = data.progreso;
+      pantallaActual = parseInt(data.progreso.ultima_pantalla || '0');
+      rellenarCampos();
+    }
+  } catch (e) {
+    console.log('Sin progreso previo');
+  }
+}
+
+async function guardarProgreso(pantalla) {
+  const datos = recopilarDatosPantalla(pantalla);
+  datosLocales[pantalla] = datos;
+  datosLocales.ultima_pantalla = String(pantalla);
+
+  try {
+    await fetch(`${API_URL}/api/guardar-progreso`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${tokenAcceso}`
+      },
+      body: JSON.stringify({ pantalla: String(pantalla), datos })
+    });
+    mostrarGuardado();
+  } catch (e) {
+    console.error('Error guardando:', e);
+  }
+}
+
+function mostrarGuardado() {
+  const el = document.getElementById('guardadoMsg');
+  el.classList.add('visible');
+  clearTimeout(guardadoTimeout);
+  guardadoTimeout = setTimeout(() => el.classList.remove('visible'), 2500);
+}
+
+// ============================================================
+// NAVEGACIÓN
+// ============================================================
+function mostrarPantalla(n) {
+  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+  const id = n === 0 ? 'p0' : n === 13 ? 'p13' : `p${n}`;
+  const el = document.getElementById(id);
+  if (el) el.classList.add('activa');
+
+  actualizarProgresoBar();
+  document.getElementById('progresoLabel').textContent =
+    n === 0 ? 'Introducción' :
+    n === 13 ? 'Expediente listo ✓' :
+    `Paso ${n} de 12`;
+
+  if (n === 12) generarResumen();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function siguiente() {
+  if (pantallaActual > 0 && pantallaActual < 13) {
+    await guardarProgreso(pantallaActual);
+  }
+  if (pantallaActual < 13) {
+    pantallaActual++;
+    mostrarPantalla(pantallaActual);
+  }
+}
+
+function anterior() {
+  if (pantallaActual > 0) {
+    pantallaActual--;
+    mostrarPantalla(pantallaActual);
+  }
+}
+
+// ============================================================
+// BARRA DE PROGRESO
+// ============================================================
+function construirProgresoBar() {
+  const cont = document.getElementById('progresoBarras');
+  cont.innerHTML = '';
+  for (let i = 1; i <= 12; i++) {
+    const div = document.createElement('div');
+    div.className = 'progreso-step';
+    div.id = `step${i}`;
+    cont.appendChild(div);
+  }
+}
+
+function actualizarProgresoBar() {
+  for (let i = 1; i <= 12; i++) {
+    const el = document.getElementById(`step${i}`);
+    if (!el) continue;
+    if (i < pantallaActual) el.className = 'progreso-step done';
+    else if (i === pantallaActual) el.className = 'progreso-step active';
+    else el.className = 'progreso-step';
+  }
+}
+
+// ============================================================
+// OPCIONES
+// ============================================================
+function seleccionarOpcion(grupo, elem, valor) {
+  document.querySelectorAll(`#${grupo} .opcion`).forEach(o => o.classList.remove('seleccionada'));
+  elem.classList.add('seleccionada');
+  elem.dataset.valor = valor;
+
+  // Mostrar campo de cónyuge si aplica
+  if (grupo === 'p2_regimen') {
+    const show = valor === 'sociedad_conyugal' || valor === 'separacion_bienes';
+    document.getElementById('p2_conyuge_datos').style.display = show ? 'block' : 'none';
+  }
+}
+
+function toggleOpcionMultiple(elem, valor) {
+  elem.classList.toggle('seleccionada');
+  if (elem.classList.contains('seleccionada')) {
+    if (!digitalesSeleccionados.includes(valor)) digitalesSeleccionados.push(valor);
+  } else {
+    digitalesSeleccionados = digitalesSeleccionados.filter(v => v !== valor);
+  }
+  const mostrar = digitalesSeleccionados.length > 0 && !digitalesSeleccionados.includes('ninguno');
+  document.getElementById('p7_detalles_extra').style.display = mostrar ? 'block' : 'none';
+}
+
+// ============================================================
+// HEREDEROS DINÁMICOS
+// ============================================================
+let herederoCount = 0;
+function agregarHeredero() {
+  herederoCount++;
+  const n = herederoCount;
+  const cont = document.getElementById('p3_lista_herederos');
+  const div = document.createElement('div');
+  div.className = 'heredero-card';
+  div.id = `heredero_${n}`;
+  div.innerHTML = `
+    <p class="heredero-card-titulo">Heredero ${n}</p>
+    <button class="btn-quitar" onclick="document.getElementById('heredero_${n}').remove()">✕</button>
+    <div class="campo-fila">
+      <div class="campo"><label>Nombre completo</label><input type="text" id="h${n}_nombre" placeholder="Nombre completo"/></div>
+      <div class="campo"><label>Parentesco</label><input type="text" id="h${n}_parentesco" placeholder="Ej: Hijo, hija, cónyuge"/></div>
+    </div>
+    <div class="campo-fila">
+      <div class="campo"><label>Fecha de nacimiento</label><input type="date" id="h${n}_nacimiento"/></div>
+      <div class="campo"><label>CURP</label><input type="text" id="h${n}_curp" placeholder="Opcional" style="text-transform:uppercase"/></div>
+    </div>
+    <div class="campo"><label>Domicilio</label><input type="text" id="h${n}_domicilio" placeholder="Calle, colonia, ciudad"/></div>
+  `;
+  cont.appendChild(div);
+}
+
+// ============================================================
+// INMUEBLES DINÁMICOS
+// ============================================================
+let inmuebleCount = 0;
+function agregarInmueble() {
+  inmuebleCount++;
+  const n = inmuebleCount;
+  const cont = document.getElementById('p5_lista_inmuebles');
+  const div = document.createElement('div');
+  div.className = 'heredero-card';
+  div.id = `inmueble_${n}`;
+  div.innerHTML = `
+    <p class="heredero-card-titulo">Inmueble ${n}</p>
+    <button class="btn-quitar" onclick="document.getElementById('inmueble_${n}').remove()">✕</button>
+    <div class="campo-fila">
+      <div class="campo"><label>Tipo</label>
+        <select id="im${n}_tipo"><option>Departamento</option><option>Casa</option><option>Terreno</option><option>Local comercial</option><option>Oficina</option><option>Otro</option></select>
+      </div>
+      <div class="campo"><label>Valor aproximado (MXN)</label><input type="number" id="im${n}_valor" placeholder="3500000"/></div>
+    </div>
+    <div class="campo"><label>Dirección</label><input type="text" id="im${n}_direccion" placeholder="Calle, número, colonia, ciudad"/></div>
+    <div class="campo-fila">
+      <div class="campo"><label>Folio Registro Público</label><input type="text" id="im${n}_folio" placeholder="Opcional"/></div>
+      <div class="campo"><label>¿A quién se lo dejas?</label><input type="text" id="im${n}_heredero" placeholder="Nombre del heredero"/></div>
+    </div>
+  `;
+  cont.appendChild(div);
+}
+
+// ============================================================
+// BIENES FINANCIEROS DINÁMICOS
+// ============================================================
+let financieroCount = 0;
+function agregarFinanciero() {
+  financieroCount++;
+  const n = financieroCount;
+  const cont = document.getElementById('p6_lista_financieros');
+  const div = document.createElement('div');
+  div.className = 'heredero-card';
+  div.id = `fin_${n}`;
+  div.innerHTML = `
+    <p class="heredero-card-titulo">Cuenta / Inversión ${n}</p>
+    <button class="btn-quitar" onclick="document.getElementById('fin_${n}').remove()">✕</button>
+    <div class="campo-fila">
+      <div class="campo"><label>Tipo</label>
+        <select id="fn${n}_tipo"><option>Cuenta bancaria (ahorro/cheques)</option><option>Inversión / Fondos</option><option>AFORE</option><option>Seguro de vida</option><option>CETES / Deuda</option><option>Acciones / Bolsa</option><option>Otro</option></select>
+      </div>
+      <div class="campo"><label>Institución</label><input type="text" id="fn${n}_inst" placeholder="Ej: BBVA, GBM, HSBC"/></div>
+    </div>
+    <div class="campo"><label>Notas adicionales</label><input type="text" id="fn${n}_notas" placeholder="Ej: Cuenta nómina, saldo aprox. $150k"/></div>
+  `;
+  cont.appendChild(div);
+}
+
+// ============================================================
+// RECOPILAR DATOS POR PANTALLA
+// ============================================================
+function recopilarDatosPantalla(n) {
+  const g = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+
+  if (n === 1) return { nombres: g('p1_nombres'), apellido1: g('p1_apellido1'), apellido2: g('p1_apellido2'), nacimiento: g('p1_nacimiento'), curp: g('p1_curp'), rfc: g('p1_rfc'), estado_civil: g('p1_estado_civil'), domicilio: g('p1_domicilio') };
+  if (n === 2) {
+    const sel = document.querySelector('#p2_regimen .seleccionada');
+    return { regimen: sel?.dataset.valor || '', conyuge_nombre: g('p2_conyuge_nombre') };
+  }
+  if (n === 3) {
+    const herederos = [];
+    for (let i = 1; i <= herederoCount; i++) {
+      if (document.getElementById(`heredero_${i}`)) {
+        herederos.push({ nombre: g(`h${i}_nombre`), parentesco: g(`h${i}_parentesco`), nacimiento: g(`h${i}_nacimiento`), curp: g(`h${i}_curp`), domicilio: g(`h${i}_domicilio`) });
+      }
+    }
+    return { herederos };
+  }
+  if (n === 4) { const sel = document.querySelector('#p4_tipo .seleccionada'); return { tipo: sel?.dataset.valor || '' }; }
+  if (n === 5) {
+    const inmuebles = [];
+    for (let i = 1; i <= inmuebleCount; i++) {
+      if (document.getElementById(`inmueble_${i}`)) {
+        inmuebles.push({ tipo: g(`im${i}_tipo`), valor: g(`im${i}_valor`), direccion: g(`im${i}_direccion`), folio: g(`im${i}_folio`), heredero: g(`im${i}_heredero`) });
+      }
+    }
+    return { inmuebles };
+  }
+  if (n === 6) {
+    const financieros = [];
+    for (let i = 1; i <= financieroCount; i++) {
+      if (document.getElementById(`fin_${i}`)) {
+        financieros.push({ tipo: g(`fn${i}_tipo`), institucion: g(`fn${i}_inst`), notas: g(`fn${i}_notas`) });
+      }
+    }
+    return { financieros };
+  }
+  if (n === 7) return { seleccionados: digitalesSeleccionados, notas: g('p7_notas') };
+  if (n === 8) return { albacea_nombre: g('p8_albacea_nombre'), albacea_parentesco: g('p8_albacea_parentesco'), albacea_domicilio: g('p8_albacea_domicilio'), albacea_tel: g('p8_albacea_tel'), sustituto_nombre: g('p8_sustituto_nombre'), sustituto_parentesco: g('p8_sustituto_parentesco') };
+  if (n === 9) { const sel = document.querySelector('#p9_tiene_menores .seleccionada'); return { tiene_menores: sel?.dataset.valor || '', tutor_nombre: g('p9_tutor_nombre'), tutor_relacion: g('p9_tutor_relacion'), curador: g('p9_curador') }; }
+  if (n === 10) return { legados: g('p10_legados'), deudas: g('p10_deudas'), instrucciones: g('p10_instrucciones') };
+  if (n === 11) { const sel = document.querySelector('#p11_voluntad .seleccionada'); return { voluntad: sel?.dataset.valor || '' }; }
+  return {};
+}
+
+// ============================================================
+// RELLENAR CAMPOS AL CARGAR
+// ============================================================
+function rellenarCampos() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  const d = datosLocales;
+
+  if (d['1']) { set('p1_nombres', d['1'].nombres); set('p1_apellido1', d['1'].apellido1); set('p1_apellido2', d['1'].apellido2); set('p1_nacimiento', d['1'].nacimiento); set('p1_curp', d['1'].curp); set('p1_rfc', d['1'].rfc); set('p1_estado_civil', d['1'].estado_civil); set('p1_domicilio', d['1'].domicilio); }
+  if (d['8']) { set('p8_albacea_nombre', d['8'].albacea_nombre); set('p8_albacea_parentesco', d['8'].albacea_parentesco); set('p8_albacea_domicilio', d['8'].albacea_domicilio); set('p8_albacea_tel', d['8'].albacea_tel); set('p8_sustituto_nombre', d['8'].sustituto_nombre); set('p8_sustituto_parentesco', d['8'].sustituto_parentesco); }
+  if (d['10']) { set('p10_legados', d['10'].legados); set('p10_deudas', d['10'].deudas); set('p10_instrucciones', d['10'].instrucciones); }
+}
+
+// ============================================================
+// RESUMEN PANTALLA 12
+// ============================================================
+function generarResumen() {
+  const d = datosLocales;
+  const cont = document.getElementById('p12_resumen');
+  const p1 = d['1'] || {};
+  const p3 = d['3'] || {};
+  const p8 = d['8'] || {};
+
+  const nombreCompleto = [p1.nombres, p1.apellido1, p1.apellido2].filter(Boolean).join(' ') || '—';
+  const herederos = p3.herederos || [];
+
+  cont.innerHTML = `
+    <h3>Resumen de tu expediente</h3>
+    <div class="resumen-item"><span class="resumen-key">Testador</span><span class="resumen-val">${nombreCompleto}</span></div>
+    <div class="resumen-item"><span class="resumen-key">CURP</span><span class="resumen-val">${p1.curp || '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Estado civil</span><span class="resumen-val">${p1.estado_civil || '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Domicilio</span><span class="resumen-val">${p1.domicilio || '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Herederos</span><span class="resumen-val">${herederos.length > 0 ? herederos.map(h => h.nombre).filter(Boolean).join(', ') : '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Distribución</span><span class="resumen-val">${(d['4'] || {}).tipo === 'partes_iguales' ? 'Partes iguales' : (d['4'] || {}).tipo === 'porcentajes_distintos' ? 'Porcentajes distintos' : (d['4'] || {}).tipo === 'bienes_especificos' ? 'Bienes específicos' : '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Albacea</span><span class="resumen-val">${p8.albacea_nombre || '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Albacea sustituto</span><span class="resumen-val">${p8.sustituto_nombre || '—'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Hijos menores</span><span class="resumen-val">${(d['9'] || {}).tiene_menores === 'si' ? `Sí — Tutor: ${(d['9'] || {}).tutor_nombre || '—'}` : 'No'}</span></div>
+    <div class="resumen-item"><span class="resumen-key">Voluntad anticipada</span><span class="resumen-val">${(d['11'] || {}).voluntad === 'si_incluir' ? 'Sí, solicitar en notaría' : 'No por ahora'}</span></div>
+  `;
+}
+
+// ============================================================
+// GENERAR PDF (impresión del navegador)
+// ============================================================
+function generarPDF() {
+  window.print();
+}
+</script>
+</body>
+</html>
