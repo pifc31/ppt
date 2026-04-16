@@ -13,6 +13,7 @@ module.exports = async (req, res) => {
       'success_url=' + encodeURIComponent(successUrl),
       'cancel_url=' + encodeURIComponent(cancelUrl),
       'locale=es-419',
+      'allow_promotion_codes=true',
     ].join('&');
 
     const r = await fetch('https://api.stripe.com/v1/checkout/sessions', {
