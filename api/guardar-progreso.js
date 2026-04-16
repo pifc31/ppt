@@ -1,60 +1,48 @@
-const { createClient } = require('@supabase/supabase-js');
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_URL);
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
+  res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: 'No autorizado' });
-
-  const token = authHeader.replace('Bearer ', '');
-
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
+  const token = (req.headers.authorization || '').replace('Bearer ', '');
+  if (!token) return res.status(401).json({ error: 'No autorizado' });
 
   try {
-    // Verificar token del usuario
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    if (authError || !user) return res.status(401).json({ error: 'Token inválido' });
+    // Verificar usuario
+    const ur = await fetch(SUPABASE_URL + '/auth/v1/user', {
+      headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + token },
+    });
+    const user = await ur.json();
+    if (!user.email) return res.status(401).json({ error: 'Token invalido' });
 
     const { pantalla, datos } = req.body;
-    if (!pantalla || datos === undefined) {
-      return res.status(400).json({ error: 'Falta pantalla o datos' });
-    }
 
     // Obtener progreso actual
-    const { data: usuario } = await supabase
-      .from('usuarios')
-      .select('progreso')
-      .eq('email', user.email)
-      .single();
+    const gr = await fetch(SUPABASE_URL + '/rest/v1/usuarios?email=eq.' + encodeURIComponent(user.email) + '&select=progreso', {
+      headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY },
+    });
+    const rows = await gr.json();
+    const progresoActual = (rows[0] && rows[0].progreso) || {};
 
-    const progresoActual = usuario?.progreso || {};
-
-    // Actualizar progreso con nueva pantalla
-    const nuevoProgreso = {
-      ...progresoActual,
+    const nuevoProgreso = Object.assign({}, progresoActual, {
       [pantalla]: datos,
-      ultima_pantalla: pantalla,
-      actualizado_en: new Date().toISOString(),
-    };
+      ultima_pantalla: String(pantalla),
+    });
 
-    const { error: updateError } = await supabase
-      .from('usuarios')
-      .update({ progreso: nuevoProgreso })
-      .eq('email', user.email);
-
-    if (updateError) throw updateError;
+    await fetch(SUPABASE_URL + '/rest/v1/usuarios?email=eq.' + encodeURIComponent(user.email), {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ progreso: nuevoProgreso }),
+    });
 
     res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('Error guardar-progreso:', err);
     res.status(500).json({ error: err.message });
   }
 };
