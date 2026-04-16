@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pago exitoso — Perpetua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--azul:#1C2B3A;--dorado:#B8965A;--dorado-light:#D4AE78;--crema:#F5F0E8;--blanco:#FDFAF5;--serif:'Cormorant Garamond',Georgia,serif;--sans:'DM Sans',sans-serif}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--sans);background:var(--azul);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem}
+    .logo{font-family:var(--serif);font-size:1.8rem;font-style:italic;color:var(--blanco);letter-spacing:.1em;margin-bottom:3rem}
+    .card{background:var(--blanco);border-radius:6px;padding:clamp(2rem,5vw,3.5rem);max-width:480px;width:100%;text-align:center}
+    .icono{width:64px;height:64px;background:rgba(184,150,90,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
+    .icono svg{width:32px;height:32px;stroke:var(--dorado)}
+    h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:400;color:var(--azul);margin-bottom:.8rem}
+    h1 em{font-style:italic;color:var(--dorado)}
+    .subtitle{font-family:var(--sans);font-size:.95rem;color:#6B7280;line-height:1.65;margin-bottom:2rem}
+    .email-box{background:var(--crema);border-radius:4px;padding:1.2rem;margin-bottom:2rem}
+    .email-label{font-family:var(--sans);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:#9CA3AF;margin-bottom:.3rem}
+    .email-valor{font-family:var(--sans);font-size:.95rem;font-weight:500;color:var(--azul);word-break:break-all}
+    .pasos{text-align:left;margin-bottom:2rem}
+    .paso{display:flex;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(28,43,58,.07)}
+    .paso:last-child{border-bottom:none}
+    .paso-num{width:28px;height:28px;background:var(--azul);color:var(--blanco);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:.75rem;font-weight:500;flex-shrink:0}
+    .paso-num.dorado{background:var(--dorado)}
+    .paso-texto{font-family:var(--sans);font-size:.88rem;color:#374151;line-height:1.5;padding-top:3px}
+    .paso-texto strong{color:var(--azul);display:block;margin-bottom:.1rem}
+    .estado{font-family:var(--sans);font-size:.8rem;color:#6B7280;padding:.6rem 1rem;border-radius:4px;background:var(--crema);margin-bottom:1.5rem;display:none}
+    .estado.visible{display:block}
+    .estado.error{background:#FEF2F2;color:#DC2626}
+    .estado.ok{background:#F0FDF4;color:#16A34A}
+    .spinner-wrap{display:flex;align-items:center;justify-content:center;gap:.8rem;padding:1rem;display:none}
+    .spinner-wrap.visible{display:flex}
+    .spinner{width:20px;height:20px;border:2px solid rgba(28,43,58,.15);border-top-color:var(--dorado);border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spinner-text{font-family:var(--sans);font-size:.85rem;color:#6B7280}
+    .btn-secundario{width:100%;background:transparent;color:var(--azul);font-family:var(--sans);font-size:.88rem;padding:.9rem;border:1px solid rgba(28,43,58,.2);border-radius:4px;cursor:pointer;transition:all .2s;margin-top:.8rem}
+    .btn-secundario:hover{border-color:var(--dorado);color:var(--dorado)}
+  </style>
+</head>
+<body>
+  <div class="logo">Perpetua</div>
+  <div class="card">
+    <div class="icono">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+
+    <h1>Pago exitoso. <em>Bienvenido.</em></h1>
+    <p class="subtitle">Tu acceso a Perpetua está siendo preparado. En un momento recibirás un correo para entrar a tu proceso.</p>
+
+    <div class="email-box">
+      <p class="email-label">Revisando tu correo</p>
+      <p class="email-valor" id="emailMostrado">Verificando...</p>
+    </div>
+
+    <div class="pasos">
+      <div class="paso">
+        <div class="paso-num dorado">1</div>
+        <div class="paso-texto"><strong>Pago confirmado ✓</strong>Recibimos tu pago correctamente.</div>
+      </div>
+      <div class="paso">
+        <div class="paso-num" id="paso2Num">2</div>
+        <div class="paso-texto"><strong>Preparando tu acceso</strong>Estamos creando tu cuenta y enviando tu enlace de acceso.</div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-texto"><strong>Revisa tu correo</strong>Haz clic en el enlace que te enviamos — no necesitas contraseña.</div>
+      </div>
+    </div>
+
+    <div class="spinner-wrap visible" id="spinnerWrap">
+      <div class="spinner"></div>
+      <span class="spinner-text">Verificando pago y enviando enlace...</span>
+    </div>
+
+    <div class="estado" id="estadoMsg"></div>
+
+    <button class="btn-secundario" id="btnReenviar" style="display:none" onclick="reenviarLink()">
+      ¿No recibiste el correo? Reenviar enlace
+    </button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+
+    async function verificarPago() {
+      if (!sessionId) {
+        mostrarError('No se encontró la sesión de pago. Por favor contacta a soporte@perpetua.today');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/verificar-pago?session_id=${sessionId}`);
+        const data = await res.json();
+
+        document.getElementById('spinnerWrap').classList.remove('visible');
+
+        if (data.ok) {
+          document.getElementById('emailMostrado').textContent = data.email;
+          document.getElementById('paso2Num').style.background = 'var(--dorado)';
+          mostrarOk(`✓ Enlace de acceso enviado a ${data.email} — revisa tu bandeja de entrada y spam.`);
+          document.getElementById('btnReenviar').style.display = 'block';
+        } else {
+          mostrarError(data.error || 'Error al verificar el pago. Escríbenos a soporte@perpetua.today');
+        }
+      } catch (err) {
+        document.getElementById('spinnerWrap').classList.remove('visible');
+        mostrarError('Error de conexión. Por favor escríbenos a soporte@perpetua.today');
+      }
+    }
+
+    async function reenviarLink() {
+      const btn = document.getElementById('btnReenviar');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      try {
+        const res = await fetch(`/api/verificar-pago?session_id=${sessionId}`);
+        const data = await res.json();
+        if (data.ok) {
+          mostrarOk('Enlace reenviado — revisa tu correo.');
+        }
+      } catch(e) {}
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = '¿No recibiste el correo? Reenviar enlace';
+      }, 30000);
+    }
+
+    function mostrarOk(msg) {
+      const el = document.getElementById('estadoMsg');
+      el.textContent = msg;
+      el.className = 'estado visible ok';
+    }
+
+    function mostrarError(msg) {
+      const el = document.getElementById('estadoMsg');
+      el.textContent = msg;
+      el.className = 'estado visible error';
+      document.getElementById('spinnerWrap').classList.remove('visible');
+    }
+
+    verificarPago();
+  </script>
+</body>
+</html>
