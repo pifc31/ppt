@@ -1,33 +1,24 @@
-const { createClient } = require('@supabase/supabase-js');
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_URL);
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization');
-
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
-
   const token = (req.headers.authorization || '').replace('Bearer ', '');
   if (!token) return res.status(401).json({ error: 'No autorizado' });
-
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
-
   try {
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error || !user) return res.status(401).json({ error: 'Token inválido' });
-
-    const { data: usuario } = await supabase
-      .from('usuarios')
-      .select('progreso, email, pagado_en')
-      .eq('email', user.email)
-      .single();
-
+    const ur = await fetch(SUPABASE_URL + '/auth/v1/user', {
+      headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + token },
+    });
+    const user = await ur.json();
+    if (!user.email) return res.status(401).json({ error: 'Token invalido' });
+    const gr = await fetch(SUPABASE_URL + '/rest/v1/usuarios?email=eq.' + encodeURIComponent(user.email) + '&select=progreso,pagado_en', {
+      headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY },
+    });
+    const rows = await gr.json();
     res.status(200).json({
       email: user.email,
-      progreso: usuario?.progreso || {},
-      pagado_en: usuario?.pagado_en,
+      progreso: (rows[0] && rows[0].progreso) || {},
+      pagado_en: rows[0] && rows[0].pagado_en,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
