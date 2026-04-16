@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Perpetua — Guías sobre Testamento, Herencia y Legado en México</title>
+  <meta name="description" content="Guías prácticas y honestas sobre testamentos, herencias y planificación patrimonial en México. Información real para proteger a tu familia sin complicaciones." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://perpetua.today/blog/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog Perpetua — Guías sobre Testamento y Legado en México" />
+  <meta property="og:description" content="Guías prácticas sobre testamentos, herencias y planificación patrimonial en México. Información real para proteger a tu familia." />
+  <meta property="og:url" content="https://perpetua.today/blog/" />
+  <meta property="og:site_name" content="Perpetua" />
+  <meta property="og:image" content="https://perpetua.today/hero.png" />
+
+  <!-- Schema.org Blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Blog Perpetua",
+    "description": "Guías sobre testamentos, herencias y planificación patrimonial en México",
+    "url": "https://perpetua.today/blog/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Perpetua",
+      "url": "https://perpetua.today",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://perpetua.today/hero.png"
+      }
+    }
+  }
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F68LRZTD8C"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-F68LRZTD8C');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --azul:         #1C2B3A;
+      --azul-mid:     #2D4459;
+      --crema:        #F5F0E8;
+      --blanco:       #FDFAF5;
+      --dorado:       #B8965A;
+      --dorado-light: #D4AE78;
+      --gris:         #8A9BA8;
+      --texto:        #1C2B3A;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'DM Sans', system-ui, sans-serif;
+      --max: 1120px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--blanco);
+      color: var(--texto);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(28,43,58,0.96);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem clamp(1.5rem, 5vw, 4rem);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--blanco);
+      letter-spacing: 0.1em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.6);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--dorado-light); }
+    .nav-cta {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blanco);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .nav-cta:hover {
+      background: var(--dorado);
+      border-color: var(--dorado);
+    }
+
+    /* ─── HERO BLOG ─── */
+    .blog-hero {
+      background: var(--azul);
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(184,150,90,0.1) 0%, transparent 65%);
+    }
+    .blog-hero-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      position: relative;
+    }
+    .blog-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dorado-light);
+      margin-bottom: 1.2rem;
+    }
+    .blog-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--blanco);
+      max-width: 680px;
+      margin-bottom: 1.5rem;
+    }
+    .blog-hero h1 em {
+      font-style: italic;
+      color: var(--dorado-light);
+    }
+    .blog-hero p {
+      font-family: var(--sans);
+      font-size: clamp(1rem, 1.6vw, 1.08rem);
+      font-weight: 400;
+      line-height: 1.75;
+      color: rgba(253,250,245,0.75);
+      max-width: 520px;
+    }
+
+    /* ─── FILTROS ─── */
+    .filtros {
+      background: var(--crema);
+      padding: 1.5rem clamp(1.5rem, 5vw, 4rem);
+      border-bottom: 1px solid rgba(28,43,58,0.08);
+    }
+    .filtros-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .filtro-label {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-right: 0.5rem;
+    }
+    .filtro-btn {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--azul-mid);
+      background: transparent;
+      border: 1px solid rgba(28,43,58,0.15);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filtro-btn:hover,
+    .filtro-btn.active {
+      background: var(--azul);
+      color: var(--blanco);
+      border-color: var(--azul);
+    }
+
+    /* ─── GRID ARTÍCULOS ─── */
+    .articulos {
+      padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+      background: var(--blanco);
+    }
+    .articulos-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    /* Artículo destacado — primero */
+    .articulo-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 1px;
+      background: var(--azul);
+      min-height: 420px;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+    .articulo-featured:hover { opacity: 0.92; }
+    .articulo-featured-img {
+      position: relative;
+      overflow: hidden;
+      background: var(--azul-mid);
+    }
+    .articulo-featured-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    .articulo-featured-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2D4459 0%, #1C2B3A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 6rem;
+      color: rgba(184,150,90,0.2);
+    }
+    .articulo-featured-content {
+      padding: clamp(2.5rem, 4vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .articulo-tag {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dorado-light);
+      margin-bottom: 1.2rem;
+    }
+    .articulo-featured h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--blanco);
+      margin-bottom: 1.2rem;
+    }
+    .articulo-featured h2 em {
+      font-style: italic;
+      color: var(--dorado-light);
+    }
+    .articulo-featured p {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(253,250,245,0.65);
+      margin-bottom: 2rem;
+    }
+    .articulo-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .articulo-meta-item {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: rgba(253,250,245,0.35);
+      text-transform: uppercase;
+    }
+    .articulo-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dorado-light);
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      transition: gap 0.2s;
+    }
+    .articulo-featured:hover .articulo-read { gap: 0.8rem; }
+
+    /* Grid 3 columnas para el resto */
+    .articulos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(28,43,58,0.07);
+      margin-top: 1px;
+    }
+    .articulo-card {
+      background: var(--blanco);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: background 0.3s;
+      position: relative;
+    }
+    .articulo-card:hover { background: var(--crema); }
+
+    /* Estado: próximamente */
+    .articulo-card.proximamente {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    .articulo-card.proximamente::after {
+      content: 'Próximamente';
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gris);
+      border: 1px solid rgba(138,155,168,0.3);
+      padding: 0.25rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    .card-num {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(28,43,58,0.06);
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      user-select: none;
+    }
+    .card-tag {
+      font-family: var(--sans);
+      font-size: 0.63rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dorado);
+      margin-bottom: 0.8rem;
+    }
+    .card-title {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--azul);
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+    .card-title em { font-style: italic; }
+    .card-excerpt {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: #6B7280;
+      margin-bottom: 1.5rem;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(28,43,58,0.07);
+    }
+    .card-tiempo {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+    .card-arrow {
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(28,43,58,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .articulo-card:hover .card-arrow {
+      background: var(--dorado);
+      border-color: var(--dorado);
+    }
+    .articulo-card:hover .card-arrow svg { stroke: white; }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter {
+      background: var(--azul);
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .newsletter-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .newsletter h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 400;
+      color: var(--blanco);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .newsletter h2 em { font-style: italic; color: var(--dorado-light); }
+    .newsletter p {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(253,250,245,0.6);
+      margin-bottom: 2.5rem;
+    }
+    .newsletter-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--dorado);
+      color: var(--blanco);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 1rem 2.2rem;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .newsletter-cta:hover { background: var(--dorado-light); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--azul);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+    }
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--blanco);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .footer-links a {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.35);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--dorado-light); }
+    .footer-copy {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      color: rgba(253,250,245,0.2);
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      max-width: var(--max);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .articulo-featured { grid-template-columns: 1fr; min-height: auto; }
+      .articulo-featured-img { height: 260px; }
+      .articulos-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .articulos-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="https://perpetua.today" class="nav-logo">Perpetua</a>
+    <div class="nav-links">
+      <a href="https://perpetua.today">Inicio</a>
+      <a href="https://perpetua.today/blog/" class="active">Blog</a>
+      <a href="https://perpetua.today/#precio" class="nav-cta">Comenzar — $499</a>
+    </div>
+  </nav>
+
+  <!-- HERO BLOG -->
+  <header class="blog-hero">
+    <div class="blog-hero-inner">
+      <p class="blog-eyebrow">Conocimiento que protege</p>
+      <h1>Todo lo que necesitas saber sobre <em>testamentos y herencia</em> en México</h1>
+      <p>Guías honestas, datos reales y respuestas claras para que tomes las decisiones más importantes con calma y dignidad.</p>
+    </div>
+  </header>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <div class="filtros-inner">
+      <span class="filtro-label">Temas</span>
+      <button class="filtro-btn active">Todos</button>
+      <button class="filtro-btn">Testamento</button>
+      <button class="filtro-btn">Herencia</button>
+      <button class="filtro-btn">Patrimonio</button>
+      <button class="filtro-btn">Familia</button>
+      <button class="filtro-btn">CDMX</button>
+    </div>
+  </div>
+
+  <!-- ARTÍCULOS -->
+  <main class="articulos">
+    <div class="articulos-inner">
+
+      <!-- ARTÍCULO DESTACADO #1 -->
+      <a href="https://perpetua.today/blog/que-pasa-si-muero-sin-testamento-mexico" class="articulo-featured reveal" aria-label="Leer artículo: Qué pasa si muero sin testamento en México">
+        <div class="articulo-featured-img">
+          <div class="articulo-featured-img-placeholder">∞</div>
+          <!-- Cuando tengas la imagen: <img src="https://perpetua.today/sin-testamento-mexico.webp" alt="Familia mexicana reflexionando sobre testamento y herencia" width="600" height="420" loading="lazy" /> -->
+        </div>
+        <div class="articulo-featured-content">
+          <span class="articulo-tag">⬤ &nbsp;Testamento · Lectura esencial</span>
+          <h2>¿Qué pasa si muero sin testamento en <em>México</em>? La verdad que nadie dice</h2>
+          <p>El 77% de los mexicanos no tiene testamento. Las consecuencias para su familia van mucho más allá del dinero — años de conflictos, bienes congelados y decisiones que otros tomarán por ti.</p>
+          <div class="articulo-meta">
+            <span class="articulo-meta-item">8 min de lectura</span>
+            <span class="articulo-meta-item">Herencia · CDMX</span>
+          </div>
+          <span class="articulo-read">
+            Leer artículo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- GRID 3 COLUMNAS -->
+      <div class="articulos-grid">
+
+        <!-- Artículo 2 -->
+        <a href="https://perpetua.today/blog/cuanto-cuesta-no-tener-testamento-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">02</div>
+          <span class="card-tag">Patrimonio · Costos</span>
+          <h2 class="card-title">Cuánto cuesta <em>no tener testamento</em> en México (los números reales)</h2>
+          <p class="card-excerpt">Honorarios, tiempos y el verdadero impacto económico de morir intestado con un patrimonio de varios millones.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">7 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 3 -->
+        <a href="https://perpetua.today/blog/papa-murio-sin-testamento-que-hacer-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">03</div>
+          <span class="card-tag">Herencia · Crisis</span>
+          <h2 class="card-title">Mi papá murió sin testamento: <em>qué hacer</em> paso a paso en México</h2>
+          <p class="card-excerpt">La guía más honesta para quien enfrenta una herencia intestamentaria. Tiempos, costos y cómo proteger a tu familia.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">10 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 4 -->
+        <a href="https://perpetua.today/blog/como-proteger-departamento-hijos-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">04</div>
+          <span class="card-tag">Patrimonio · Inmuebles</span>
+          <h2 class="card-title">Cómo proteger tu <em>departamento</em> para tus hijos en México</h2>
+          <p class="card-excerpt">Lo que necesitas saber para que tu propiedad llegue a quien quieres sin trámites de años ni gastos innecesarios.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">6 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 5 -->
+        <a href="https://perpetua.today/blog/documentos-para-testamento-cdmx" class="articulo-card proximamente reveal">
+          <div class="card-num">05</div>
+          <span class="card-tag">Testamento · CDMX</span>
+          <h2 class="card-title">Documentos para hacer tu testamento en <em>CDMX</em> — la lista definitiva</h2>
+          <p class="card-excerpt">Exactamente qué llevar al notario, en qué formato y cómo organizarlo para que tu cita dure 45 minutos.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">5 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 6 -->
+        <a href="https://perpetua.today/blog/que-es-un-albacea-como-elegir-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">06</div>
+          <span class="card-tag">Testamento · Guía</span>
+          <h2 class="card-title">¿Qué es un albacea y cómo elegir <em>al correcto</em>? Guía para México</h2>
+          <p class="card-excerpt">La persona más importante de tu testamento no es el notario. Es el albacea. Aquí cómo elegirlo bien.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">6 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 7 -->
+        <a href="https://perpetua.today/blog/herencia-sin-peleas-familia-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">07</div>
+          <span class="card-tag">Familia · Conflictos</span>
+          <h2 class="card-title">Herencia sin peleas: cómo evitar <em>conflictos familiares</em> con un testamento</h2>
+          <p class="card-excerpt">El 90% de las familias mexicanas tiene conflictos serios al heredar sin testamento. Cómo evitar que la tuya sea una de ellas.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">7 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 8 -->
+        <a href="https://perpetua.today/blog/cuanto-cuesta-testamento-benito-juarez-cdmx" class="articulo-card proximamente reveal">
+          <div class="card-num">08</div>
+          <span class="card-tag">Costos · Benito Juárez</span>
+          <h2 class="card-title">Cuánto cuesta hacer testamento en <em>Benito Juárez CDMX</em> en 2026</h2>
+          <p class="card-excerpt">Precios reales, notarías verificadas y todo lo que necesitas saber antes de ir. Sin sorpresas.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">5 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 9 -->
+        <a href="https://perpetua.today/blog/mes-del-testamento-2026-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">09</div>
+          <span class="card-tag">Septiembre · Campaña</span>
+          <h2 class="card-title">Septiembre: <em>Mes del Testamento 2026</em> — todo lo que necesitas saber</h2>
+          <p class="card-excerpt">Descuentos de hasta 60%, módulos de atención, notarías participantes y cómo aprovechar el mes más importante del año para tu patrimonio.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">6 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Artículo 10 -->
+        <a href="https://perpetua.today/blog/como-hacer-testamento-desde-celular-mexico" class="articulo-card proximamente reveal">
+          <div class="card-num">10</div>
+          <span class="card-tag">Digital · Guía completa</span>
+          <h2 class="card-title">Cómo preparar tu testamento <em>desde el celular</em> en México (guía 2026)</h2>
+          <p class="card-excerpt">La tecnología ya permite organizar todo tu patrimonio desde tu teléfono antes de ir al notario. Así funciona.</p>
+          <div class="card-footer">
+            <span class="card-tiempo">8 min</span>
+            <div class="card-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C2B3A" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- CTA NEWSLETTER / PERPETUA -->
+  <section class="newsletter">
+    <div class="newsletter-inner reveal">
+      <h2>¿Ya leíste suficiente?<br><em>El siguiente paso es actuar.</em></h2>
+      <p>En 20 minutos puedes tener todo tu patrimonio organizado y listo para el notario. Sin complicaciones, sin jerga legal, a tu ritmo.</p>
+      <a href="https://perpetua.today/#precio" class="newsletter-cta">
+        Comenzar ahora — $499
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <p class="footer-logo">Perpetua</p>
+        <p style="font-family:var(--sans);font-size:0.7rem;color:rgba(253,250,245,0.3);margin-top:0.3rem;">perpetua.today</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://perpetua.today">Inicio</a>
+        <a href="https://perpetua.today/blog/">Blog</a>
+        <a href="https://perpetua.today/#precio">Comenzar</a>
+        <a href="#">Aviso de privacidad</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Perpetua. Esta plataforma es una herramienta de organización y orientación. No constituye asesoría jurídica.</p>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Filtros (decorativos por ahora)
+    document.querySelectorAll('.filtro-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
