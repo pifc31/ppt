@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perpetua — 20 minutos hoy. Años de paz para los tuyos.</title>
+  <meta name="description" content="Perpetua te guía a través de un proceso de 20 minutos para organizar tu testamento con claridad, dignidad y paz. Diseñado con principios de psicología, tanatología y filosofía." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --azul:       #1C2B3A;
+      --azul-mid:   #2D4459;
+      --azul-light: #4A6FA5;
+      --crema:      #F5F0E8;
+      --blanco:     #FDFAF5;
+      --dorado:     #B8965A;
+      --dorado-light: #D4AE78;
+      --verde:      #2D3D2E;
+      --gris:       #8A9BA8;
+      --texto:      #1C2B3A;
+
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'DM Sans', system-ui, sans-serif;
+
+      --max: 1120px;
+      --gap: clamp(2rem, 5vw, 5rem);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--blanco);
+      color: var(--texto);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem clamp(1.5rem, 5vw, 4rem);
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(28, 43, 58, 0.92);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--blanco);
+      font-style: italic;
+    }
+    .nav-cta {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blanco);
+      border: 1px solid rgba(255,255,255,0.4);
+      padding: 0.6rem 1.4rem;
+      border-radius: 2px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .nav-cta:hover {
+      background: var(--dorado);
+      border-color: var(--dorado);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(28,43,58,0.35) 0%,
+          rgba(28,43,58,0.15) 40%,
+          rgba(28,43,58,0.75) 100%),
+        url('hero.png') center/cover no-repeat;
+      transform: scale(1.04);
+      animation: slowzoom 18s ease-out forwards;
+    }
+    @keyframes slowzoom {
+      from { transform: scale(1.04); }
+      to   { transform: scale(1.0); }
+    }
+
+    /* grain overlay */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 8rem clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vh, 7rem);
+    }
+    .hero-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dorado-light);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeup 1s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--blanco);
+      max-width: 820px;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeup 1s 0.55s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--dorado-light);
+    }
+    .hero-sub {
+      font-family: var(--sans);
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(253,250,245,0.82);
+      max-width: 560px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeup 1s 0.8s forwards;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeup 1s 1s forwards;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--dorado);
+      color: var(--blanco);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 1rem 2.2rem;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--dorado-light);
+      transform: translateY(-1px);
+    }
+    .btn-price {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: rgba(253,250,245,0.6);
+      letter-spacing: 0.04em;
+    }
+    .btn-price strong {
+      color: var(--blanco);
+    }
+
+    @keyframes fadeup {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SCROLL INDICATOR ───────────────────────────────────── */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      right: clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeup 1s 1.4s forwards;
+      z-index: 2;
+    }
+    .scroll-indicator span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.4);
+      writing-mode: vertical-lr;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, rgba(253,250,245,0.5), transparent);
+      animation: scrollpulse 2s 2s infinite;
+    }
+    @keyframes scrollpulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── SECTIONS SHARED ────────────────────────────────────── */
+    section {
+      padding: var(--gap) clamp(1.5rem, 5vw, 4rem);
+    }
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dorado);
+      margin-bottom: 1.2rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--azul);
+    }
+    .section-title em { font-style: italic; }
+
+    /* fade-in on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── BLOQUE 2 — STATS ───────────────────────────────────── */
+    .stats {
+      background: var(--azul);
+      padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .stats-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .stats-header {
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+    .stats-header .section-label { color: var(--dorado-light); }
+    .stats-header .section-title { color: var(--blanco); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item {
+      padding: 3rem 2rem 3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item:not(:last-child) {
+      border-right: 1px solid rgba(255,255,255,0.1);
+      padding-right: 3rem;
+      margin-right: 3rem;
+    }
+    .stat-number {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 300;
+      color: var(--dorado-light);
+      line-height: 1;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .stat-label {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(253,250,245,0.65);
+      max-width: 280px;
+    }
+
+    /* ─── BLOQUE 3 — SOLUCIÓN ────────────────────────────────── */
+    .solucion {
+      background: var(--crema);
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .solucion-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: center;
+    }
+    .solucion-text p {
+      font-family: var(--sans);
+      font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: #4A5568;
+      margin-top: 1.5rem;
+    }
+    .solucion-text p + p { margin-top: 1rem; }
+    .solucion-visual {
+      position: relative;
+      aspect-ratio: 4/5;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .solucion-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .solucion-visual-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--azul-mid) 0%, var(--verde) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .solucion-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--dorado);
+      opacity: 0.3;
+      z-index: 1;
+      border-radius: 2px;
+    }
+    .solucion-quote {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      right: 2rem;
+      z-index: 2;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--blanco);
+      line-height: 1.4;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+
+    /* ─── BLOQUE 4 — CÓMO FUNCIONA ───────────────────────────── */
+    .proceso {
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+      background: var(--blanco);
+    }
+    .proceso-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .proceso-header {
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+      max-width: 560px;
+    }
+    .proceso-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(28,43,58,0.08);
+    }
+    .step {
+      background: var(--blanco);
+      padding: 3rem 2.5rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .step:hover { background: var(--crema); }
+    .step-num {
+      font-family: var(--serif);
+      font-size: 5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(28,43,58,0.07);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      user-select: none;
+    }
+    .step-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--azul);
+      margin-bottom: 0.8rem;
+    }
+    .step-desc {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #6B7280;
+    }
+    .step-line {
+      position: absolute;
+      top: 3rem;
+      right: 0;
+      width: 1px;
+      height: calc(100% - 6rem);
+      background: rgba(28,43,58,0.08);
+    }
+
+    /* ─── BLOQUE 5 — TAGLINE ──────────────────────────────────── */
+    .tagline {
+      background: var(--azul);
+      padding: clamp(6rem, 12vw, 12rem) clamp(1.5rem, 5vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .tagline::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(184,150,90,0.12) 0%, transparent 70%);
+    }
+    .tagline-text {
+      position: relative;
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--blanco);
+      line-height: 1.2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .tagline-text em {
+      color: var(--dorado-light);
+      font-style: normal;
+    }
+    .tagline-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--dorado), transparent);
+      margin: 2.5rem auto 0;
+    }
+
+    /* ─── BLOQUE 7 — TESTIMONIO ──────────────────────────────── */
+    .testimonio {
+      background: var(--crema);
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .testimonio-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .testimonio-quote {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--azul);
+      margin-bottom: 2.5rem;
+    }
+    .testimonio-quote::before {
+      content: '\201C';
+      color: var(--dorado);
+      font-size: 1.2em;
+    }
+    .testimonio-quote::after {
+      content: '\201D';
+      color: var(--dorado);
+      font-size: 1.2em;
+    }
+    .testimonio-author {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+    .testimonio-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--dorado);
+      margin: 1.5rem auto;
+    }
+
+    /* ─── BLOQUE 8 — PRECIO ──────────────────────────────────── */
+    .precio {
+      background: var(--blanco);
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .precio-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: start;
+    }
+    .precio-left .section-title {
+      margin-bottom: 2rem;
+    }
+    .precio-tag {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+    .precio-actual {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 300;
+      color: var(--azul);
+      line-height: 1;
+    }
+    .precio-original {
+      font-family: var(--sans);
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--gris);
+      text-decoration: line-through;
+    }
+    .precio-launch {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dorado);
+      border: 1px solid var(--dorado);
+      padding: 0.35rem 0.8rem;
+      border-radius: 1px;
+      margin-bottom: 2.5rem;
+    }
+    .precio-includes {
+      list-style: none;
+      margin-bottom: 3rem;
+    }
+    .precio-includes li {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #4A5568;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(28,43,58,0.07);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .precio-includes li::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--dorado);
+      flex-shrink: 0;
+    }
+    .precio-cta {
+      width: 100%;
+      background: var(--azul);
+      color: var(--blanco);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1.2rem 2rem;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 1rem;
+    }
+    .precio-cta:hover { background: var(--azul-mid); }
+    .precio-legal {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      color: var(--gris);
+      line-height: 1.6;
+      text-align: center;
+    }
+    .precio-right {
+      background: var(--azul);
+      border-radius: 2px;
+      padding: 3rem;
+      position: sticky;
+      top: 6rem;
+    }
+    .precio-right-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--blanco);
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .comparacion-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      gap: 1rem;
+    }
+    .comparacion-label {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: rgba(253,250,245,0.6);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .comparacion-val {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .comparacion-val.mal { color: #E57373; }
+    .comparacion-val.bien { color: var(--dorado-light); }
+    .comparacion-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: rgba(253,250,245,0.4);
+      line-height: 1.6;
+    }
+
+    /* ─── BLOQUE 9 — OBJECIONES ──────────────────────────────── */
+    .objeciones {
+      background: var(--crema);
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .objeciones-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .objeciones-header {
+      margin-bottom: clamp(3rem, 5vw, 4rem);
+      max-width: 480px;
+    }
+    .objeciones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(28,43,58,0.08);
+    }
+    .objecion {
+      background: var(--crema);
+      padding: 2.5rem 2rem;
+      transition: background 0.3s;
+    }
+    .objecion:hover { background: var(--blanco); }
+    .objecion-q {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--azul);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    .objecion-a {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #6B7280;
+    }
+
+    /* ─── FUENTES CIENTÍFICAS ────────────────────────────────── */
+    .fuentes {
+      background: var(--blanco);
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid rgba(28,43,58,0.08);
+    }
+    .fuentes-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .fuentes-header {
+      margin-bottom: 3rem;
+    }
+    .fuentes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+    .fuente-grupo-titulo {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dorado);
+      margin-bottom: 1.2rem;
+    }
+    .fuente-item {
+      margin-bottom: 1.2rem;
+    }
+    .fuente-autor {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--azul);
+      margin-bottom: 0.2rem;
+    }
+    .fuente-desc {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--gris);
+      line-height: 1.5;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--azul);
+      padding: 3rem clamp(1.5rem, 5vw, 4rem);
+    }
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--blanco);
+      letter-spacing: 0.1em;
+    }
+    .footer-tagline {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: rgba(253,250,245,0.4);
+      letter-spacing: 0.08em;
+      margin-top: 0.3rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .footer-links a {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253,250,245,0.4);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--dorado-light); }
+    .footer-copy {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: rgba(253,250,245,0.25);
+      margin-top: 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 1.5rem;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .solucion-inner,
+      .precio-inner { grid-template-columns: 1fr; }
+      .solucion-visual { aspect-ratio: 16/9; }
+      .proceso-steps { grid-template-columns: 1fr; }
+      .step-line { display: none; }
+      .objeciones-grid { grid-template-columns: 1fr; }
+      .fuentes-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-item:not(:last-child) {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+      }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 1rem; }
+      .precio-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-logo">Perpetua</div>
+    <a href="#precio" class="nav-cta">Comenzar hoy</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Planificación patrimonial con dignidad</p>
+      <h1 class="hero-title">
+        Si algo te pasara hoy,<br>
+        ¿tu familia sabría exactamente qué hacer<br>
+        con todo lo que <em>construiste</em>?
+      </h1>
+      <p class="hero-sub">
+        La mayoría no lo sabe. Y resolverlo sin preparación le puede costar años de peleas
+        y decenas de miles de pesos a tus seres queridos.
+      </p>
+      <div class="hero-actions">
+        <a href="#precio" class="btn-primary">
+          Proteger a mi familia
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <span class="btn-price">Precio de lanzamiento <strong>$499 pesos</strong></span>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Descubre</span>
+    </div>
+  </section>
+
+  <!-- BLOQUE 2 — STATS -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stats-header reveal">
+        <p class="section-label">Lo que pasa cuando no hay testamento</p>
+        <h2 class="section-title" style="color:var(--blanco)">
+          El costo real de<br><em>no actuar</em>
+        </h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <div class="stat-number">2–5</div>
+          <p class="stat-label">
+            <strong style="color:rgba(253,250,245,0.85)">años</strong> puede tardar repartir un patrimonio
+            sin testamento cuando hay desacuerdos entre herederos.
+            Años en que tus bienes están congelados y tu familia, dividida.
+          </p>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">10–15%</div>
+          <p class="stat-label">
+            <strong style="color:rgba(253,250,245,0.85)">del valor total de tu patrimonio</strong> cobran
+            los abogados en juicios sucesorios complejos. En un patrimonio
+            de $5 millones: entre $500,000 y $750,000 pesos en honorarios.
+          </p>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">9/10</div>
+          <p class="stat-label">
+            <strong style="color:rgba(253,250,245,0.85)">familias reportan conflictos serios</strong> entre
+            herederos cuando no hay testamento. La herencia sin instrucciones
+            claras no une familias — las divide.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOQUE 3 — SOLUCIÓN -->
+  <section class="solucion">
+    <div class="solucion-inner container">
+      <div class="solucion-text reveal">
+        <p class="section-label">Por qué Perpetua</p>
+        <h2 class="section-title">
+          Un viaje de 20 minutos<br>que te da <em>claridad</em><br>sobre lo más importante
+        </h2>
+        <p>
+          Perpetua no es un formulario. Es un proceso interactivo diseñado con principios
+          de psicología, tanatología y filosofía — para llevarte a tomar decisiones
+          que la mayoría posterga durante años.
+        </p>
+        <p>
+          El 77% de los mexicanos nunca hace este proceso. No por falta de bienes
+          ni de tiempo — sino porque nadie les había creado el espacio para hacerlo
+          con calma, con guía y con dignidad.
+        </p>
+        <p>
+          Con Perpetua no estarás solo. Irás paso a paso, a tu ritmo, tomando decisiones
+          con claridad. Al terminar, no solo tendrás todo listo para el notario —
+          tendrás algo más valioso: la paz de saber que tu familia recibirá
+          <strong>recuerdos de amor</strong>, no años de caos.
+        </p>
+      </div>
+      <div class="solucion-visual reveal">
+        <div class="solucion-visual-placeholder">
+          <!-- Reemplaza con: <img src="proceso.png" alt="Proceso Perpetua" /> -->
+        </div>
+        <div class="solucion-quote">
+          "La muerte no es el final de lo que construiste.<br>El caos que dejas sin organizar, sí."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOQUE 4 — CÓMO FUNCIONA -->
+  <section class="proceso">
+    <div class="proceso-inner">
+      <div class="proceso-header reveal">
+        <p class="section-label">El proceso</p>
+        <h2 class="section-title">Así de <em>simple</em></h2>
+      </div>
+      <div class="proceso-steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3 class="step-title">Respondes</h3>
+          <p class="step-desc">
+            Preguntas claras sobre tu familia, tus bienes y tus decisiones.
+            Sin jerga legal. Sin presión. A tu ritmo — desde tu teléfono,
+            en una sola sesión o en varias.
+          </p>
+          <div class="step-line"></div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3 class="step-title">Organizamos</h3>
+          <p class="step-desc">
+            Perpetua genera tu expediente patrimonial completo.
+            Todo lo que el notario necesita saber,
+            organizado y listo para una sola visita.
+          </p>
+          <div class="step-line"></div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3 class="step-title">Firmas</h3>
+          <p class="step-desc">
+            Vas al notario con todo preparado. La cita dura 45 minutos.
+            Tu familia queda protegida. Para siempre.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOQUE 5 — TAGLINE -->
+  <section class="tagline">
+    <p class="tagline-text reveal">
+      <em>20 minutos</em> hoy.<br>
+      Años de paz para los tuyos.
+    </p>
+    <div class="tagline-line reveal"></div>
+  </section>
+
+  <!-- BLOQUE 7 — TESTIMONIO -->
+  <section class="testimonio">
+    <div class="testimonio-inner reveal">
+      <p class="testimonio-quote">
+        Llevaba tres años diciéndome que lo haría pronto. En 25 minutos tomé todas las
+        decisiones que había postergado. La semana siguiente firmé mi testamento.
+      </p>
+      <div class="testimonio-divider"></div>
+      <p class="testimonio-author">Roberto M. — Del Valle, Ciudad de México</p>
+    </div>
+  </section>
+
+  <!-- BLOQUE 8 — PRECIO -->
+  <section class="precio" id="precio">
+    <div class="precio-inner container">
+      <div class="precio-left reveal">
+        <p class="section-label">Una sola inversión</p>
+        <h2 class="section-title">Sin sorpresas.<br>Sin <em>renovaciones</em>.</h2>
+        <br>
+        <div class="precio-tag">
+          <span class="precio-actual">$499</span>
+          <span class="precio-original">$1,200</span>
+        </div>
+        <p style="font-family:var(--sans);font-size:0.75rem;color:var(--gris);margin-bottom:0.6rem;">pesos mexicanos · pago único</p>
+        <span class="precio-launch">Precio de lanzamiento — disponible hasta el 30 de abril</span>
+        <ul class="precio-includes">
+          <li>Proceso guiado completo a tu ritmo, desde cualquier dispositivo</li>
+          <li>Expediente patrimonial listo para el notario</li>
+          <li>Checklist personalizado de documentos según tu situación</li>
+          <li>Acceso de por vida — actualiza cuando cambien tus circunstancias</li>
+        </ul>
+        <button class="precio-cta" onclick="window.location.href='#'">
+          Comenzar hoy — $499 pesos
+        </button>
+        <p class="precio-legal">
+          Pago seguro. Tus datos están protegidos bajo la<br>
+          Ley Federal de Protección de Datos Personales (LFPDPPP).
+        </p>
+      </div>
+      <div class="precio-right reveal">
+        <p class="precio-right-title">Sin testamento vs. con Perpetua</p>
+        <div class="comparacion-row">
+          <span class="comparacion-label">Tiempo para heredar un inmueble</span>
+          <span class="comparacion-val mal">2–5 años</span>
+        </div>
+        <div class="comparacion-row">
+          <span class="comparacion-label">Costo total del proceso legal</span>
+          <span class="comparacion-val mal">+$500,000</span>
+        </div>
+        <div class="comparacion-row">
+          <span class="comparacion-label">Conflictos familiares</span>
+          <span class="comparacion-val mal">Muy probable</span>
+        </div>
+        <div class="comparacion-row">
+          <span class="comparacion-label">Con Perpetua + notario</span>
+          <span class="comparacion-val bien">~$2,300 pesos</span>
+        </div>
+        <div class="comparacion-row">
+          <span class="comparacion-label">Tiempo total del proceso</span>
+          <span class="comparacion-val bien">Una tarde</span>
+        </div>
+        <div class="comparacion-row">
+          <span class="comparacion-label">Paz para tu familia</span>
+          <span class="comparacion-val bien">Para siempre</span>
+        </div>
+        <p class="comparacion-footer">
+          Los costos de juicio intestamentario son estimados con base en datos del
+          Colegio Nacional del Notariado Mexicano e Infobae México 2025.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOQUE 9 — OBJECIONES -->
+  <section class="objeciones">
+    <div class="objeciones-inner">
+      <div class="objeciones-header reveal">
+        <p class="section-label">Preguntas frecuentes</p>
+        <h2 class="section-title">Lo que quizás<br><em>estás pensando</em></h2>
+      </div>
+      <div class="objeciones-grid">
+        <div class="objecion reveal">
+          <p class="objecion-q">"No tengo tiempo ahora."</p>
+          <p class="objecion-a">
+            Perpetua está diseñada para hacerse en partes. Empieza hoy con cinco minutos.
+            Continúa cuando quieras. Tu progreso se guarda y te espera exactamente donde lo dejaste.
+          </p>
+        </div>
+        <div class="objecion reveal">
+          <p class="objecion-q">"Es que tengo que pensarlo bien."</p>
+          <p class="objecion-a">
+            Eso es exactamente lo que Perpetua te ayuda a hacer — pensar bien cada decisión,
+            sin prisa y sin presión. No es un formulario. Es un proceso guiado con dignidad.
+          </p>
+        </div>
+        <div class="objecion reveal">
+          <p class="objecion-q">"Ya lo haré en septiembre."</p>
+          <p class="objecion-a">
+            Septiembre llega una vez al año. Tu familia necesita protección hoy.
+            Y el precio de lanzamiento no estará disponible para siempre.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUENTES CIENTÍFICAS -->
+  <section class="fuentes">
+    <div class="fuentes-inner">
+      <div class="fuentes-header reveal">
+        <p class="section-label">Respaldo académico</p>
+        <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.4rem)">
+          Perpetua está construida<br>sobre <em>evidencia</em>
+        </h2>
+      </div>
+      <div class="fuentes-grid reveal">
+        <div>
+          <p class="fuente-grupo-titulo">Psicología del comportamiento</p>
+          <div class="fuente-item">
+            <p class="fuente-autor">Fogg, B.J. — Stanford University</p>
+            <p class="fuente-desc">A Behavior Model for Persuasive Design. Fundamento de por qué las personas postergan decisiones importantes y cómo el diseño puede ayudarles a actuar.</p>
+          </div>
+          <div class="fuente-item">
+            <p class="fuente-autor">Kahneman, D. — Princeton University</p>
+            <p class="fuente-desc">Thinking, Fast and Slow. Teoría de aversión a la pérdida: el costo de no actuar pesa más que el beneficio de actuar.</p>
+          </div>
+        </div>
+        <div>
+          <p class="fuente-grupo-titulo">Tanatología</p>
+          <div class="fuente-item">
+            <p class="fuente-autor">Kübler-Ross, E. — Universidad de Chicago</p>
+            <p class="fuente-desc">On Death and Dying. Marco de referencia sobre cómo los seres humanos procesan la muerte y la importancia de la planeación anticipada.</p>
+          </div>
+        </div>
+        <div>
+          <p class="fuente-grupo-titulo">Datos patrimoniales México</p>
+          <div class="fuente-item">
+            <p class="fuente-autor">Colegio de Notarios de la CDMX</p>
+            <p class="fuente-desc">Solo el 23% de los capitalinos tiene testamento. El proceso intestamentario puede representar del 10% al 15% del valor total del patrimonio.</p>
+          </div>
+          <div class="fuente-item">
+            <p class="fuente-autor">Infobae México, 2025</p>
+            <p class="fuente-desc">El costo de un juicio intestamentario oscila entre $20,000 y $100,000 pesos en casos simples, escalando con la complejidad patrimonial.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <p class="footer-logo">Perpetua</p>
+        <p class="footer-tagline">perpetua.today</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Aviso de privacidad</a>
+        <a href="#">Términos y condiciones</a>
+        <a href="#precio">Comenzar</a>
+      </div>
+    </div>
+    <div class="footer-copy container">
+      <p>20 minutos hoy. Años de paz para los tuyos.</p>
+      <p style="margin-top:0.5rem;">© 2025 Perpetua. Esta plataforma es una herramienta de organización y orientación. No constituye asesoría jurídica.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
