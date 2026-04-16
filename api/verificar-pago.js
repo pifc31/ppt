@@ -44,18 +44,15 @@ module.exports = async (req, res) => {
       });
     }
 
-    await fetch(SUPABASE_URL + '/auth/v1/magiclink', {
+    const redirectTo = encodeURIComponent('https://app.perpetua.today/app');
+    await fetch(SUPABASE_URL + '/auth/v1/magiclink?redirect_to=' + redirectTo, {
       method: 'POST',
       headers: {
         'apikey': SUPABASE_SERVICE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email,
-        create_user: true,
-        redirectTo: 'https://app.perpetua.today/app',
-      }),
+      body: JSON.stringify({ email, create_user: true }),
     });
 
     res.status(200).json({ ok: true, email });
